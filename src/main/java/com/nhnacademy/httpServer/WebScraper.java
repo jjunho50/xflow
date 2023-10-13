@@ -1,4 +1,4 @@
-package com.nhnacademy.Webservice;
+package com.nhnacademy.httpServer;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -11,6 +11,9 @@ import java.util.regex.Pattern;
 
 public class WebScraper {
     // main을 지우고 class로 만들고 서버에서 이 동작을 사용하자.
+    // 메소드 변경하고 -> url 인자로 받아
+    // url을 받는 클래스 하나만들어
+    // 그리고 잡아여
     public static void main(String[] args) {
         try {
             String url = "http://ems.nhnacademy.com:1880/dev";
@@ -24,6 +27,7 @@ public class WebScraper {
         }
     }
 
+    // 지정된 URL에서 HTML 데이터를 가져오는 메서드
     private static String fetchDataFromUrl(String url) throws IOException {
         StringBuilder responseData = new StringBuilder();
 
@@ -43,6 +47,7 @@ public class WebScraper {
         return responseData.toString();
     }
 
+    // 읽어온 데이터 json파일에 집어넣기.
     private static void saveDataToJsonFile(String data, String filePath) {
         try (FileWriter fileWriter = new FileWriter(filePath)) {
             String extractedData = extractDataFromHtml(data);

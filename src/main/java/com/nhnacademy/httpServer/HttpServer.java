@@ -20,10 +20,10 @@ public class HttpServer extends Thread {
     }
     //
 
-    public static String getJsonData() {
+    public static String getJsonData(String uri) {
         try {
             // output.json 파일의 경로
-            String filePath = "output.json";
+            String filePath = "src/main/java/com/nhnacademy/dataFile/" + uri + ".json";
 
             // 파일 읽기
             StringBuilder jsonData = new StringBuilder();
@@ -90,7 +90,8 @@ public class HttpServer extends Thread {
             response.addBody(line);
             response.addHeader("Content-Length", String.valueOf(line.length()));
         } else if (uri.equals("dev")) {
-            String jsonData = getJsonData();
+            Jsonparcing.creatJsonFile(uri);
+            String jsonData = getJsonData(uri);
             response = new Response("HTTP/1.1", 200, "OK");
             response.addHeader("Content-Type", "application/json");
             response.addBody(jsonData);
