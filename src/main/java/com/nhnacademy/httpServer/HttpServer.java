@@ -21,7 +21,6 @@ public class HttpServer extends Thread {
     // 우리가 사실 dev만했는데 / 요청잘못하면 / 예외 처리 다른거좀 해주고
     // ep등 다른것도 좀 해주고
 
-    // 밥먹고 와서 해야할거 -> ndoe 써야하고, json파일 파싱해서 id 밸류값만 추출하고 추가 그거에따른 예외처리
     public static String getJsonData(String uri) {
         try {
             // output.json 파일의 경로
@@ -83,6 +82,7 @@ public class HttpServer extends Thread {
         Response response = new Response("", 404, "");
         String uri = request.getUri().replaceFirst("/", "");
         System.out.println(uri);
+        String[] field = uri.split("/");
 
         if (uri.equals("")) {
             // 루트 디렉토리 요청에 대한 응답
@@ -98,14 +98,25 @@ public class HttpServer extends Thread {
             response.addHeader("Content-Type", "application/json");
             response.addBody(jsonData);
             response.addHeader("Content-Length", String.valueOf(jsonData.length()));
-        } else if (uri.equals("ep")) {
-            Jsonparcing.creatJsonFile(uri);
-            String jsonData = getJsonData(uri);
-            response = new Response("HTTP/1.1", 200, "OK");
-            response.addHeader("Content-Type", "application/json");
-            response.addBody(jsonData);
-            response.addHeader("Content-Length", String.valueOf(jsonData.length()));
-        } else if (uri.equals("..")) {
+        } else if (field[0].equals("ep")) {
+            if (field[1] == null) {
+                Jsonparcing.creatJsonFile(field[0]);
+                String jsonData = getJsonData(field[0]);
+                response = new Response("HTTP/1.1", 200, "OK");
+                response.addHeader("Content-Type", "application/json");
+                response.addBody(jsonData);
+                response.addHeader("Content-Length", String.valueOf(jsonData.length()));
+            } else {
+                Jsonparcing.creatJsonFile(uri);
+                String jsonData = getJsonData(uri);
+                response = new Response("HTTP/1.1", 200, "OK");
+                response.addHeader("Content-Type", "application/json");
+                response.addBody(jsonData);
+                response.addHeader("Content-Length", String.valueOf(jsonData.length()));
+            }
+        } else if (uri.equals(".."))
+
+        {
             // 상위 디렉토리 요청에 대한 응답
             response = new Response("HTTP/1.1", 403, "Forbidden");
         } else if (!isReadable(uri)) {
@@ -127,7 +138,6 @@ public class HttpServer extends Thread {
             response.addHeader("Content-Length", String.valueOf(builder.toString().length()));
             System.out.println(builder.toString());
         }
-
         outputStream.write(response.toString().getBytes());
         outputStream.flush();
     }
