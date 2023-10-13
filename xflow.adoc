@@ -1,0 +1,177 @@
+= XFlow를 개발하고, 이를 이용한 Web Service를 구현하라.
+
+== XFlow
+Flow-based programming을 지원하는 application 실행 엔진이다.
+
+{empty} +
+
+=== 주요 기능
+
+* FBP를 이용해 웹 서비스를 구성한다.
+* JSON 파일을 이용한 programming이 가능하다.
+* 노드간 연결을 통해 응용프로그램 개발 및 실행이 가능하도록 지원한다.
+* 컴파일 과정 없이 실행 가능하다.
+
+{empty} +
+
+=== 요구 사항
+* subclass, subtype을 이용해 class hierarchy를 구성하고, 구성도를 그린다.
+* 터미널 접속을 통해 서비스와 관련된 정보를 설정하거나 변경할 수 있다.
+** 접속 관리
+*** 연결 host 정보(IP address, Port, 접속 시간)
+*** 블랙 리스트 관리(등록, 삭제, 보기)
+** 리소스 사용 현황
+*** CPU 사용률
+*** 메모리 현황(총용량, 현재 사용량, 사용 가능량)
+*** Storage 현황(총용량, 현재 사용량)
+* Web service를 구성한다.
+** URL은 별도의 node를 만들어 분석한다.
+*** 입력 - URL
+*** 출력 - scheme, host, port, target, parameter, ...
+** method별로 분류하여 처리
+*** GET,POST 등을 별도의 Node에서 처리하도록 구성  
+** Cookie를 이용해 접속 상태를 관리한다.
+** 데이터 형식은 HTTP에서 많이 사용하는, JSON, HTML, XML 등을 사용할 수 있다.
+* 로거를 이용해 로그를 처리한다.
+** log4j, slf4j, logback등을 이용해 로그를 처리한다.
+** 설정으로 파일 또는 stdout으로 출력을 선택할 수 있다.
+
+{empty} + 
+
+== Web Service
+* 데이터 수집 및 가능 서비스를 지원한다.
+* 데이터는 디바이스 관리 서버로부터 얻어 올 수 있다.
+* 데이터에는 디바이스 정보가 포함되어 있다.
+** 모델
+** 일련번호
+* 데이터에는 센서 수집 정보가 포함되어 있따.
+** 센서 종류
+** 수집 주기
+** 센서 값
+* 수집된 데이터는 파일에 저장된다.
+** 수집된 데이터는 일정 시간 간격으로 정리되고, 정리된 데이터는 지정된 형식(JSON)을 갖는 파일에 저장된다.
+* 서비스에서는 요청에 따라 저장된 데이터를 보여 준다.
+
+{empty} + 
+
+== Node 구성
+* Input Node
+** Standard In Node - stdin으로 들어오는 데이터를 flow 메시지로 만들어 flow에 넣는다.
+** Socket In Node - socket에서 들어오는 데이터를 flow message로 만들어 flow에 넣는다.
+* Output Node
+** Stadnard Out Node - Flow에서 처리된 결과를 stdout으로 출력한다.
+** Socket Out Node - Flow에서 처리된 결과를 socket으로 내보낸다.
+* Process Node
+** HTTP Client Node - 설정으로 지정된 host에 연결하고, 연동되어 있는 socket in node와 socket out node를 통해 서버와 통신한다.
+** HTTP Server Node - Client가 연결되면, 연동되어 있는 socket in node와 socket out node를 통해 client와 통신한다.
+** Filter Node - Message의 데이터를 분석하여 통과시키거나 버린다.
+** Predicate Node - Message의 결과를 조건식에 맞춰 true/false를 결정한다.
+** Selection Node - 특정 message를 특정 출력 port로 내보낸다.
+* Trace Node
+** 출력을 로그로 보낼 수 있다.
+** Exception을 처리할 수 있다.
+* Extra Node
+** 서비스 구현에 필요하다 판단되는 기능의 node를 구현한다.
+
+== Pipe 구성
+* 패킷을 일정 갯수 저장할 수 있다.
+* 일정 시간 지난 패킷은 폐기할 수 있다.
+* 패킷의 종류에 따라 우선 순위를 줄 수 있다.
+
+== Message 구성
+* 데이터의 종류나 형식에 따라 구분한다.
+
+== Exception
+* 모든 에러는 Exception으로 처리한다.
+
+== Data Server API
+
+=== /dev
+
+설치된 device id 목록을 제공한다.
+
+**Option**
+
+
+**Response**
+[source,json]
+----
+
+[
+  {
+    "id": "24e124600d183350",
+    "model": "VS121",
+    "place": "Entrance"
+  },
+  {
+    "id": "24e124617d157233",
+    "model": "VS330",
+    "place": "Entrance"
+  },
+  ...
+]
+----
+
+=== /dev/<device id>
+
+요청된 device의 정보를 제공한다.
+
+
+**Response**
+[source,json]
+----
+{
+    "id" : "24e124128c067999" ,
+    "model" : "AM107",
+    "location" : "nhnacademy/gyeongnam/class_a",
+    "sensor_type" : ["temperature","humidity","CO2","TVOC","Light","Barometric Pressure"]
+}
+----
+
+=== /ep
+
+지원 가능한 sensor 정보를 제공한다.
+
+**Option**
+
+**Response**
+[source,json]
+----
+{
+    "sensor": [ "temperature", "humidity", "CO2", "TVOC", "Light", "Barometric Pressure" ]
+}
+----
+
+=== /ep/<type>
+
+Sensor 데이터를 제공한다.
+
+**Option**
+
+* device=<device id>[,<device id>,...]
+* count=<count>
+* st=<Time>
+* et=<Time>
+
+**Request**
+
+/ep/temperature?count=10&st=1696772438&et=1696772438
+
+**Response**
+[source,json]
+----
+{
+    "type" : "temperature",
+    "start_time" : 1696772438,
+    "end_time" : 1696772498,
+    "device" : [
+        {
+            "id" : "1696772438",
+            "value" : [ 22.4, 22.4, 22.5, 22.4,...  ]
+        },
+        {
+            ...
+        }
+    ]
+}
+----
