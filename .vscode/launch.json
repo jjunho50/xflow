@@ -1,0 +1,63 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "WebScraper",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.Webservice.WebScraper",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
+            "name": "WebScraper",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.httpServer.WebScraper",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
+            "name": "Httpd",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.httpServer.Httpd",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
+            "name": "HttpServer",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.httpServer.HttpServer",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
+            "name": "DataProcessor",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.Datacenter.DataProcessor",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "TerminalApp",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.Webservice.TerminalApp",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
+            "name": "WebService",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.Webservice.WebService",
+            "projectName": "xflow"
+        }
+    ]
+}
