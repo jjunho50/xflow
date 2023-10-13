@@ -1,0 +1,22 @@
+{
+    "id": {
+        "info": {
+            "model": "WS301",
+            "place": "Class B"
+        },
+        "status": {
+            "time": 1697181014713,
+            "sensor": {
+                "switchOpen": 1
+            }
+        }
+    },
+    "model": "WS301",
+    "place": "Class B",
+    "status": {
+        "time": 1697181014713,
+        "sensor": {
+            "switchOpen": 1
+        }
+    }
+}

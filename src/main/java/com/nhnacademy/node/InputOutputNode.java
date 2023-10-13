@@ -8,7 +8,6 @@ public abstract class InputOutputNode extends ActiveNode {
     Wire[] inputWires;
     Wire[] outputWires;
 
-
     InputOutputNode(int inCount, int outCount) {
         super();
 

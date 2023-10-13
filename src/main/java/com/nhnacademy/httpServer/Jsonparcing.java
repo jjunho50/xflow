@@ -33,8 +33,7 @@ public class Jsonparcing {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setRequestMethod("GET");
 
-        try (BufferedReader reader =
-                new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 responseData.append(line);
@@ -68,5 +67,3 @@ public class Jsonparcing {
         return m.replaceAll(" ").trim();
     }
 }
-
-

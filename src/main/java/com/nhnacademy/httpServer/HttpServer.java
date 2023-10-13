@@ -9,6 +9,11 @@ import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import com.nhnacademy.exception.InvalidRequestException;
 
 public class HttpServer extends Thread {
@@ -41,6 +46,24 @@ public class HttpServer extends Thread {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public static JSONArray getJson(String uri) throws IOException, ParseException {
+
+        // output.json 파일의 경로
+        String filePath = "src/main/java/com/nhnacademy/dataFile/" + uri + ".json";
+
+        // 파일 읽기
+        JSONParser parser = new JSONParser();
+
+        Reader reader = new FileReader(filePath);
+        // System.out.println(parser.parse(reader).getClass());
+        JSONArray object = (JSONArray) parser.parse(reader);
+
+        System.out.println(object.getClass());
+
+        return object;
+
     }
 
     // 디렉토리 내의 파일 목록을 가져오는 메서드
@@ -79,9 +102,15 @@ public class HttpServer extends Thread {
 
     // HTTP 응답을 클라이언트에게 보내는 메서드
     public void sendResponse(BufferedOutputStream outputStream, Request request)
-            throws IOException {
+            throws IOException, ParseException {
         Response response = new Response("", 404, "");
         String uri = request.getUri().replaceFirst("/", "");
+        String access = uri.split("/")[0];
+        String option = "";
+        if (uri.split("/").length > 1) {
+            option = uri.split("/", 2)[1];
+
+        }
         System.out.println(uri);
 
         if (uri.equals("")) {
@@ -91,13 +120,26 @@ public class HttpServer extends Thread {
             String line = listFilesUsingJavaIO(".").toString();
             response.addBody(line);
             response.addHeader("Content-Length", String.valueOf(line.length()));
-        } else if (uri.equals("dev")) {
-            Jsonparcing.creatJsonFile(uri);
-            String jsonData = getJsonData(uri);
-            response = new Response("HTTP/1.1", 200, "OK");
-            response.addHeader("Content-Type", "application/json");
-            response.addBody(jsonData);
-            response.addHeader("Content-Length", String.valueOf(jsonData.length()));
+        } else if (access.equals("dev")) {
+            Jsonparcing.creatJsonFile(access);
+            JSONArray jsonArray = getJson(access);
+            String jsonData = getJsonData(access);
+            if (uri.equals(access)) {
+                response = new Response("HTTP/1.1", 200, "OK");
+                response.addHeader("Content-Type", "application/json");
+                response.addBody(jsonData);
+                response.addHeader("Content-Length", String.valueOf(jsonData.length()));
+            } else if (jsonArray.stream().anyMatch(obj -> ((JSONObject) obj).containsKey("id"))) {
+                response = new Response("HTTP/1.1", 200, "OK");
+                response.addHeader("Content-Type", "application/json");
+                Jsonparcing.creatJsonFile(uri);
+                jsonData = getJsonData(uri);
+                response.addBody(jsonData);
+                response.addHeader("Content-Length", String.valueOf(jsonData.length()));
+            } else {
+                response = new Response("HTTP/1.1", 404, "NOT FOUND");
+            }
+
         } else if (uri.equals("ep")) {
             Jsonparcing.creatJsonFile(uri);
             String jsonData = getJsonData(uri);
@@ -132,19 +174,19 @@ public class HttpServer extends Thread {
         outputStream.flush();
     }
 
-
     @Override
     public void run() {
         try (BufferedInputStream socketIn = new BufferedInputStream(socket.getInputStream());
-                BufferedOutputStream socketOut =
-                        new BufferedOutputStream(socket.getOutputStream())) {
+                BufferedOutputStream socketOut = new BufferedOutputStream(socket.getOutputStream())) {
 
             Request request = receiveRequest(socketIn);
             sendResponse(socketOut, request);
 
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
-
 
 }
