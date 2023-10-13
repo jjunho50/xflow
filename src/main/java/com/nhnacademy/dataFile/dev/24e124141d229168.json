@@ -5,18 +5,18 @@
             "place": "Class B"
         },
         "status": {
-            "time": 1697181014713,
+            "time": 1697182571533,
             "sensor": {
-                "switchOpen": 1
+                "switchOpen": 0
             }
         }
     },
     "model": "WS301",
     "place": "Class B",
     "status": {
-        "time": 1697181014713,
+        "time": 1697182571533,
         "sensor": {
-            "switchOpen": 1
+            "switchOpen": 0
         }
     }
 }
