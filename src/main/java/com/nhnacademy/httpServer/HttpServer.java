@@ -18,8 +18,10 @@ public class HttpServer extends Thread {
     public HttpServer(Socket socket) {
         this.socket = socket;
     }
-    //
+    // 우리가 사실 dev만했는데 / 요청잘못하면 / 예외 처리 다른거좀 해주고
+    // ep등 다른것도 좀 해주고
 
+    // 밥먹고 와서 해야할거 -> ndoe 써야하고, json파일 파싱해서 id 밸류값만 추출하고 추가 그거에따른 예외처리
     public static String getJsonData(String uri) {
         try {
             // output.json 파일의 경로
@@ -96,6 +98,13 @@ public class HttpServer extends Thread {
             response.addHeader("Content-Type", "application/json");
             response.addBody(jsonData);
             response.addHeader("Content-Length", String.valueOf(jsonData.length()));
+        } else if (uri.equals("ep")) {
+            Jsonparcing.creatJsonFile(uri);
+            String jsonData = getJsonData(uri);
+            response = new Response("HTTP/1.1", 200, "OK");
+            response.addHeader("Content-Type", "application/json");
+            response.addBody(jsonData);
+            response.addHeader("Content-Length", String.valueOf(jsonData.length()));
         } else if (uri.equals("..")) {
             // 상위 디렉토리 요청에 대한 응답
             response = new Response("HTTP/1.1", 403, "Forbidden");
@@ -137,11 +146,5 @@ public class HttpServer extends Thread {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(new File("..").list()));
-        File f = new File(".vscode/settings.json");
-        System.out.println(f.getAbsolutePath());
-        System.out.println(f.canRead());
-        System.out.println(f.getParent());
-    }
+
 }
