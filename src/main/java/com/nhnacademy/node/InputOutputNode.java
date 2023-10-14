@@ -8,15 +8,15 @@ public abstract class InputOutputNode extends ActiveNode {
     Wire[] inputWires;
     Wire[] outputWires;
 
-    InputOutputNode(int inCount, int outCount) {
-        super();
+    InputOutputNode(String name, int inCount, int outCount) {
+        super(name);
 
         inputWires = new Wire[inCount];
         outputWires = new Wire[outCount];
     }
 
-    InputOutputNode(String name, int inCount, int outCount) {
-        super(name);
+    InputOutputNode(int inCount, int outCount) {
+        super();
 
         inputWires = new Wire[inCount];
         outputWires = new Wire[outCount];

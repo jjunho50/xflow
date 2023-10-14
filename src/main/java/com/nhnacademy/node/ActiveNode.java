@@ -60,7 +60,6 @@ public abstract class ActiveNode extends Node implements Runnable {
     }
 
     void preprocess() {
-        //
     }
 
     void process() {

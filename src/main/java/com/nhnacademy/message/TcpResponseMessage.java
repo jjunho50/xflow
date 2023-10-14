@@ -22,6 +22,6 @@ public class TcpResponseMessage extends Message {
 
     @Override
     public String toString() {
-        return Arrays.toString(payload);
+        return new String(payload) + Arrays.toString(payload);
     }
 }

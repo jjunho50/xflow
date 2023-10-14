@@ -6,6 +6,34 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TestSocketClient",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.test.TestSocketClient",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
+            "name": "TestSocketServer",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.test.TestSocketServer",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
+            "name": "TestSocketClient",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.Test.TestSocketClient",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
+            "name": "TestSocketServer",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.Test.TestSocketServer",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
             "name": "WebScraper",
             "request": "launch",
             "mainClass": "com.nhnacademy.Webservice.WebScraper",

@@ -38,6 +38,7 @@ public class TerminalOutNode extends OutputNode {
                 } else if (message instanceof LongMessage) {
                     System.out.println(((LongMessage) message).getPayload());
                 } else {
+                    System.out.println(message.getClass());
                     System.out.println(message.toString());
                 }
 
