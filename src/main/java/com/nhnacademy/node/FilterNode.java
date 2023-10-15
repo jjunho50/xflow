@@ -23,7 +23,7 @@ import com.nhnacademy.message.TcpRequestMessage;
 import com.nhnacademy.message.TcpResponseMessage;
 import com.nhnacademy.node.TCPServer.Handler;
 
-public class MessageFeedback extends InputOutputNode {
+public class FilterNode extends InputOutputNode {
 
     public static String getJsonData(String uri) {
         try {
@@ -64,11 +64,11 @@ public class MessageFeedback extends InputOutputNode {
 
     }
 
-    public MessageFeedback() {
+    public FilterNode() {
         super(1, 1);
     }
 
-    MessageFeedback(int inCount, int outCount) {
+    FilterNode(int inCount, int outCount) {
         super(inCount, outCount);
     }
 
@@ -113,10 +113,11 @@ public class MessageFeedback extends InputOutputNode {
                         String line = receiveRequest(request);
                         String uri = line.split(" ")[1].replaceFirst("/", "");
                         String access = uri.split("/")[0];
-                        String option = "";
+                        String string = "";
                         if (uri.split("/").length > 1) {
-                            option = uri.split("/", 2)[1];
+                            string = uri.split("/", 2)[1];
                         }
+                        final String option = string;
                         System.out.println(uri);
                         Response response = new Response("HTTP/1.1", 200, "OK");
                         response.addHeader("Content-Type", "application/json");
@@ -133,7 +134,7 @@ public class MessageFeedback extends InputOutputNode {
                                 response.addHeader("Content-Type", "application/json");
                                 response.addBody(jsonData);
                                 response.addHeader("Content-Length", String.valueOf(jsonData.length()));
-                            } else if (jsonArray.stream().anyMatch(obj -> ((JSONObject) obj).containsKey("id"))) {
+                            } else if (jsonArray.stream().anyMatch(obj -> ((JSONObject) obj).containsValue(option))) {
                                 response = new Response("HTTP/1.1", 200, "OK");
                                 response.addHeader("Content-Type", "application/json");
                                 Jsonparcing.creatJsonFile(uri);
@@ -142,6 +143,8 @@ public class MessageFeedback extends InputOutputNode {
                                 response.addHeader("Content-Length", String.valueOf(jsonData.length()));
                             } else {
                                 response = new Response("HTTP/1.1", 404, "NOT FOUND");
+                                response.addHeader("Content-Type", "application/json");
+                                response.addHeader("Content-Length", "0");
                             }
                         }
                         id = request.getSenderId();

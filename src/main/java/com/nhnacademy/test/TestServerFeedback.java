@@ -1,6 +1,6 @@
 package com.nhnacademy.test;
 
-import com.nhnacademy.node.MessageFeedback;
+import com.nhnacademy.node.FilterNode;
 import com.nhnacademy.node.TCPServer;
 import com.nhnacademy.node.TerminalOutNode;
 import com.nhnacademy.wire.BufferedWire;
@@ -10,7 +10,7 @@ public class TestServerFeedback {
 
     public static void main(String[] args) {
         TCPServer server = new TCPServer("server");
-        MessageFeedback a = new MessageFeedback();
+        FilterNode a = new FilterNode();
         Wire wire1 = new BufferedWire();
         Wire wire2 = new BufferedWire();
 

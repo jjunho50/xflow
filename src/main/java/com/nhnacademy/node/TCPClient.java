@@ -86,7 +86,7 @@ public class TCPClient extends InputOutputNode {
 
     }
 
-    int port = 8888;
+    int port = 80;
     Socket socket;
     Map<UUID, Handler> handlerMap;
     Thread messageSender;
@@ -104,7 +104,7 @@ public class TCPClient extends InputOutputNode {
     void preprocess() {
         try {
             // serverSocket = new ServerSocket(port);
-            socket = new Socket("localhost", port);
+            socket = new Socket("httpbin.org", port);
 
             messageSender = new Thread(() -> {
 
