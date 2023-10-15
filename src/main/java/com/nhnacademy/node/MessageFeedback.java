@@ -119,6 +119,9 @@ public class MessageFeedback extends InputOutputNode {
                         }
                         System.out.println(uri);
                         Response response = new Response("HTTP/1.1", 200, "OK");
+                        response.addHeader("Content-Type", "application/json");
+                        response.addBody(request.toString());
+                        response.addHeader("Content-Length", String.valueOf(request.toString().length()));
                         UUID id;
 
                         if (access.equals("dev")) {
