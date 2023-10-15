@@ -8,6 +8,9 @@ import org.json.simple.JSONObject;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 
+// 노드를 만들때 http 서버에 있는 기능들을 node로 분류해서 작성하면 된다.
+// 노드를 만들때 누가 나가고 누가 들어오는지를 잘 파악해서 작성해라
+
 public abstract class Node {
     private static int count;
     UUID id;

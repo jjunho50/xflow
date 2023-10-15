@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./common.js"></script>
+
+    <script type="text/javascript">
+        window.addEventListener("DOMContentLoaded", function () {
+
+            const logText1 = document.getElementById("log-text-temperature");
+            const logText2 = document.getElementById("log-text-humidity");
+
+            const api = emsapi();
+
+            google.charts.load('current', { 'packages': ['gauge'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+
+                const data = google.visualization.arrayToDataTable([
+                    ['Label', 'Value'],
+                    ['온도', 0],
+                    ['습도', 0]
+                ]);
+
+                const options = {
+                    width: 400, height: 300,
+                    redFrom: 90, redTo: 100,
+                    yellowFrom: 75, yellowTo: 90,
+                    minorTicks: 5
+                };
+
+                const chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+                chart.draw(data, options);
+                setInterval(async function () {
+
+                    let jsonData;
+
+                    try {
+                        jsonData = await api.getTemperature();
+                        console.log("jsonData:" + JSON.stringify(jsonData));
+                        logText1.textContent = (JSON.stringify(jsonData) + "\n" + logText1.textContent);
+
+                        data.setValue(0, 1, jsonData.temperature);
+                        chart.draw(data, options);
+
+                    } catch (e) {
+                        console.log("error:" + e);
+                    }
+                }, 1000);
+                setInterval(async function () {
+
+                    let jsonData;
+
+                    try {
+                        jsonData = await api.getHumidity();
+                        console.log("jsonData:" + JSON.stringify(jsonData));
+                        logText2.textContent = (JSON.stringify(jsonData) + "\n" + logText2.textContent);
+                    } catch (e) {
+                        console.log("error:" + e);
+                    }
+
+                    data.setValue(1, 1, jsonData.humidity);
+                    chart.draw(data, options);
+                }, 1000);
+            }
+
+        });
+    </script>
+</head>
+
+<body>
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">실시간(온도,습도)</h3>
+            </div>
+            <div class="card-body">
+                <div id="chart_div" style="width: 800px; height: 300px;"></div>
+            </div>
+            <div class="card-footer">
+                <ul>
+                    <li>온도와 습도는 1초마다 갱신됩니다.</li>
+                </ul>
+                <h2 class="mt-2">온도</h2>
+                <textarea id="log-text-temperature" cols="50" rows="5" class="form-control"></textarea>
+
+                <h2 class="mt-5">습도</h2>
+                <textarea id="log-text-humidity" cols="50" rows="5" class="form-control"></textarea>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -9,11 +9,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Jsonparcing {
-    // main을 지우고 class로 만들고 서버에서 이 동작을 사용하자.
-    // 메소드 변경하고 -> url 인자로 받아
-    // url을 받는 클래스 하나만들어어
-    // 그리고 밑에 집어 넣어
+public class CreatJson {
     public static void creatJsonFile(String uri) {
         try {
             String url = "http://ems.nhnacademy.com:1880/" + uri;
@@ -67,6 +63,8 @@ public class Jsonparcing {
 
         return m.replaceAll(" ").trim();
     }
+
+
 }
 
 

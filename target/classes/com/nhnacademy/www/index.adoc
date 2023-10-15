@@ -1,0 +1,209 @@
+=  API (Application programming interface)
+
+== Test 
+=== common.js
+- testMode = false로 변경 합니다.
+- SERVER_URL = "http://localhost:port"; 포트번호를 변경합니다.
+
+=== index.html
+ - 크롬을 이용해서 실행합니다.
+
+== 온도
+
+----
+GET /temperature
+----
+
+=== URI Parameters
+
+[cols=6*]
+|===
+
+|Name
+|Parameter Name
+|Required
+|Data Type
+|default
+|Description
+
+|data format
+|format
+|false
+|Json Format
+|**json**
+|default format=json
+
+|조회 시작일자
+|startDt
+|false
+|yyyy-mm-dd hh:mm as String
+|-
+|2022-08-23 14:00
+
+
+|조회 종료일자
+|endDt
+|false
+|yyyy-mm-dd hh:mm as String
+|-
+|2022-08-30 09:59
+
+| 조회 단위
+| unit
+| false
+| String
+| **minute**
+| hour(시), minute(분), second(초)
+
+|===
+
+=== example
+
+* 현재 온도조회
+- startDt, endDt 지정하지 않는다면 현재 온도가 조회 됩니다.
+
+==== Request
+----
+GET http://localhost/temperature
+----
+
+==== Response
+
+[json]
+----
+{
+    "dateTime":"2023-10-05 15:41:13",
+    "temperature":39
+}
+----
+
+* 2023-10-05일 시간단위 온도조회
+ - 시간단위 unit=hour
+ - 분단위로 변경하려면 unit=minute
+ - 초단위로 변경하려면 unit=second
+
+==== Request 
+----
+GET http://localhost/temperature?format=json&startDt=2023-10-05 18:00&endDt=2023-10-05 15:00:00&unit=hour
+----
+
+==== Response
+----
+application/json
+[
+    {
+        "dateTime":"2023-10-05 18:00:00",
+        "temperature":39
+    },
+    {
+        "dateTime":"2023-10-05 17:41:13",
+        "temperature":39
+    },
+    {
+        "dateTime":"2023-10-05 15:41:13",
+        "temperature":39
+    }
+]
+
+----
+
+
+== 습도
+
+----
+GET /humidity
+----
+
+=== URI Parameters
+
+[cols=6*]
+|===
+
+|Name
+|Parameter Name
+|Required
+|Data Type
+|default
+|Description
+
+|data format
+|format
+|false
+|Json Format
+|**json**
+|default format=json
+
+|조회 시작일자
+|startDt
+|false
+|yyyy-mm-dd hh:mm as String
+|-
+|2022-08-23 14:00
+
+
+|조회 종료일자
+|endDt
+|false
+|yyyy-mm-dd hh:mm as String
+|-
+|2022-08-30 09:59
+
+| 조회 단위
+| unit
+| false
+| String
+| **minute**
+| hour(시), minute(분), second(초)
+
+|===
+
+=== example
+
+* 현재 습도조회
+- startDt, endDt 지정하지 않는다면 현재 습도가 조회 됩니다.
+
+==== Request
+----
+GET http://localhost/humidity
+----
+
+==== Response
+
+[json]
+----
+{
+    "dateTime":"2023-10-05 15:41:13",
+    "humidity":70
+}
+----
+
+* 2023-10-05일 시간단위 습도조회
+ - 시간단위 unit=hour
+ - 분단위로 변경하려면 unit=minute
+ - 초단위로 변경하려면 unit=second
+
+==== Request 
+----
+GET http://localhost/humidity?format=json&startDt=2023-10-05 15:00&endDt=2023-10-05 18:00:00&unit=hour
+----
+
+==== Response
+----
+application/json
+[
+    {
+        "dateTime":"2023-10-05 18:00:00",
+        "humidity":50
+    },
+    {
+        "dateTime":"2023-10-05 17:00:00",
+        "humidity":60
+    },
+    {
+        "dateTime":"2023-10-05 15:00:00",
+        "humidity":70
+    }
+
+]
+
+----

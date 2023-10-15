@@ -10,6 +10,9 @@ import java.util.stream.Stream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.nhnacademy.exception.InvalidRequestException;
+import com.nhnacademy.total.CreatJson;
+import com.nhnacademy.total.Request;
+import com.nhnacademy.total.Response;
 
 public class HttpServer extends Thread {
     Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
@@ -18,13 +21,11 @@ public class HttpServer extends Thread {
     public HttpServer(Socket socket) {
         this.socket = socket;
     }
-    // 우리가 사실 dev만했는데 / 요청잘못하면 / 예외 처리 다른거좀 해주고
-    // ep등 다른것도 좀 해주고
 
-    // 밥먹고 와서 해야할거 -> ndoe 써야하고, json파일 파싱해서 id 밸류값만 추출하고 추가 그거에따른 예외처리
+
     public static String getJsonData(String uri) {
         try {
-            // output.json 파일의 경로
+            // .json 파일의 경로
             String filePath = "src/main/java/com/nhnacademy/dataFile/" + uri + ".json";
 
             // 파일 읽기
@@ -92,14 +93,7 @@ public class HttpServer extends Thread {
             response.addBody(line);
             response.addHeader("Content-Length", String.valueOf(line.length()));
         } else if (uri.equals("dev")) {
-            Jsonparcing.creatJsonFile(uri);
-            String jsonData = getJsonData(uri);
-            response = new Response("HTTP/1.1", 200, "OK");
-            response.addHeader("Content-Type", "application/json");
-            response.addBody(jsonData);
-            response.addHeader("Content-Length", String.valueOf(jsonData.length()));
-        } else if (uri.equals("ep")) {
-            Jsonparcing.creatJsonFile(uri);
+            CreatJson.creatJsonFile(uri);
             String jsonData = getJsonData(uri);
             response = new Response("HTTP/1.1", 200, "OK");
             response.addHeader("Content-Type", "application/json");

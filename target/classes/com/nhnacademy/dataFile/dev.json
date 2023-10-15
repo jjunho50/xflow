@@ -1,1 +1,92 @@
-[{"id":"24e124617d157233","model":"VS330","place":"Entrance"},{"id":"24e124128c067999","model":"AM107","place":"Class A"},{"id":"24e124785c389818","model":"EM320","place":"Class A"},{"id":"24e124785c421885","model":"EM320","place":"Class A"},{"id":"24e124126d152969","model":"EM500-CO2","place":"Class A"},{"id":"24e124141d189391","model":"WS301","place":"Class A"},{"id":"24e124743d012324","model":"WS302","place":"Class A"},{"id":"24e124128c140101","model":"AM107","place":"Class B"},{"id":"24e124141d229168","model":"WS301","place":"Class B"},{"id":"24e124743c210238","model":"WS302","place":"Class B"},{"id":"24e124126c457594","model":"EM500-PT100","place":"Refrigerator"},{"id":"24e124785c389010","model":"EM320","place":"Lobby"},{"id":"24e124126d152919","model":"EM500-CO2","place":"Office"},{"id":"24e124141d181415","model":"WS301","place":"Office"},{"id":"24e124136d151368","model":"EM300","place":"Office"},{"id":"24e124136d151547","model":"EM300","place":"Storage"},{"id":"24e124136d151485","model":"EM300","place":"Pair Room"},{"id":"24e124136d151836","model":"EM300","place":"Meeting Room"}]
+[
+    {
+        "id": "24e124617d157233",
+        "model": "VS330",
+        "place": "Entrance"
+    },
+    {
+        "id": "24e124128c067999",
+        "model": "AM107",
+        "place": "Class A"
+    },
+    {
+        "id": "24e124785c389818",
+        "model": "EM320",
+        "place": "Class A"
+    },
+    {
+        "id": "24e124785c421885",
+        "model": "EM320",
+        "place": "Class A"
+    },
+    {
+        "id": "24e124126d152969",
+        "model": "EM500-CO2",
+        "place": "Class A"
+    },
+    {
+        "id": "24e124141d189391",
+        "model": "WS301",
+        "place": "Class A"
+    },
+    {
+        "id": "24e124743d012324",
+        "model": "WS302",
+        "place": "Class A"
+    },
+    {
+        "id": "24e124128c140101",
+        "model": "AM107",
+        "place": "Class B"
+    },
+    {
+        "id": "24e124141d229168",
+        "model": "WS301",
+        "place": "Class B"
+    },
+    {
+        "id": "24e124743c210238",
+        "model": "WS302",
+        "place": "Class B"
+    },
+    {
+        "id": "24e124126c457594",
+        "model": "EM500-PT100",
+        "place": "Refrigerator"
+    },
+    {
+        "id": "24e124785c389010",
+        "model": "EM320",
+        "place": "Lobby"
+    },
+    {
+        "id": "24e124126d152919",
+        "model": "EM500-CO2",
+        "place": "Office"
+    },
+    {
+        "id": "24e124141d181415",
+        "model": "WS301",
+        "place": "Office"
+    },
+    {
+        "id": "24e124136d151368",
+        "model": "EM300",
+        "place": "Office"
+    },
+    {
+        "id": "24e124136d151547",
+        "model": "EM300",
+        "place": "Storage"
+    },
+    {
+        "id": "24e124136d151485",
+        "model": "EM300",
+        "place": "Pair Room"
+    },
+    {
+        "id": "24e124136d151836",
+        "model": "EM300",
+        "place": "Meeting Room"
+    }
+]

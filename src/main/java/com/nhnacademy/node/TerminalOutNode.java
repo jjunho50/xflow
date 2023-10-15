@@ -40,7 +40,6 @@ public class TerminalOutNode extends OutputNode {
                 } else {
                     System.out.println(message.toString());
                 }
-
             }
         }
     }

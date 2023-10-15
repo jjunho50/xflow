@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "WebServer",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.Webservice.WebServer",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
             "name": "WebScraper",
             "request": "launch",
             "mainClass": "com.nhnacademy.Webservice.WebScraper",
