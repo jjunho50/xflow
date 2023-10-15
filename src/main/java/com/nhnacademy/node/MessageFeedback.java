@@ -73,17 +73,15 @@ public class MessageFeedback extends InputOutputNode {
     }
 
     Thread messageReceiver;
-    TcpRequestMessage request;
-    String line;
     Response response;
     UUID id;
 
-    public boolean receiveRequest(TcpRequestMessage message) throws IOException {
+    public String receiveRequest(TcpRequestMessage message) throws IOException {
         byte[] data = message.getPayload();
 
         String request = new String(data);
 
-        line = request.split("\n")[0];
+        String line = request.split("\n")[0];
         if (line == null) {
             throw new InvalidRequestException();
         }
@@ -97,77 +95,130 @@ public class MessageFeedback extends InputOutputNode {
 
         System.out.println(request);
 
-        return true;
+        return line;
     }
 
     @Override
     void preprocess() {
-        messageReceiver = new Thread(() -> {
-
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    for (int i = 0; i < getInputWireCount(); i++) {
-                        if ((getInputWire(i) != null) && getInputWire(i).hasMessage()) {
-                            Message message = getInputWire(i).get();
-                            if (message instanceof TcpRequestMessage) {
-                                request = (TcpRequestMessage) message;
-                            }
-                        }
-                    }
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                } catch (InvalidRequestException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        messageReceiver.start();
+        setInterval(1);
     }
 
     @Override
     void process() {
         try {
-            if (!receiveRequest(request)) {
-                throw new InvalidRequestException();
-            }
-            String uri = line.split(" ")[1].replaceFirst("/", "");
-            String access = uri.split("/")[0];
-            String option = "";
-            if (uri.split("/").length > 1) {
-                option = uri.split("/", 2)[1];
-            }
-            System.out.println(uri);
+            for (int i = 0; i < getInputWireCount(); i++) {
+                if ((getInputWire(i) != null) && getInputWire(i).hasMessage()) {
+                    Message message = getInputWire(i).get();
+                    if (message instanceof TcpRequestMessage) {
+                        TcpRequestMessage request = (TcpRequestMessage) message;
 
-            if (access.equals("dev")) {
-                Jsonparcing.creatJsonFile(access);
-                JSONArray jsonArray = getJson(access);
-                String jsonData = getJsonData(access);
-                if (uri.equals(access)) {
-                    response = new Response("HTTP/1.1", 200, "OK");
-                    response.addHeader("Content-Type", "application/json");
-                    response.addBody(jsonData);
-                    response.addHeader("Content-Length", String.valueOf(jsonData.length()));
-                } else if (jsonArray.stream().anyMatch(obj -> ((JSONObject) obj).containsKey("id"))) {
-                    response = new Response("HTTP/1.1", 200, "OK");
-                    response.addHeader("Content-Type", "application/json");
-                    Jsonparcing.creatJsonFile(uri);
-                    jsonData = getJsonData(uri);
-                    response.addBody(jsonData);
-                    response.addHeader("Content-Length", String.valueOf(jsonData.length()));
-                } else {
-                    response = new Response("HTTP/1.1", 404, "NOT FOUND");
+                        String line = receiveRequest(request);
+                        String uri = line.split(" ")[1].replaceFirst("/", "");
+                        String access = uri.split("/")[0];
+                        String option = "";
+                        if (uri.split("/").length > 1) {
+                            option = uri.split("/", 2)[1];
+                        }
+                        System.out.println(uri);
+
+                        if (access.equals("dev")) {
+                            Jsonparcing.creatJsonFile(access);
+                            JSONArray jsonArray = getJson(access);
+                            String jsonData = getJsonData(access);
+                            if (uri.equals(access)) {
+                                response = new Response("HTTP/1.1", 200, "OK");
+                                response.addHeader("Content-Type", "application/json");
+                                response.addBody(jsonData);
+                                response.addHeader("Content-Length", String.valueOf(jsonData.length()));
+                            } else if (jsonArray.stream().anyMatch(obj -> ((JSONObject) obj).containsKey("id"))) {
+                                response = new Response("HTTP/1.1", 200, "OK");
+                                response.addHeader("Content-Type", "application/json");
+                                Jsonparcing.creatJsonFile(uri);
+                                jsonData = getJsonData(uri);
+                                response.addBody(jsonData);
+                                response.addHeader("Content-Length", String.valueOf(jsonData.length()));
+                            } else {
+                                response = new Response("HTTP/1.1", 404, "NOT FOUND");
+                            }
+                        }
+                        id = UuidCreator.getTimeBased();
+                        System.out.println(response.toString());
+                        output(new TcpResponseMessage(id, response.toString().getBytes()));
+                    }
                 }
             }
-            id = UuidCreator.getTimeBased();
-            System.out.println(response.toString());
-            output(new TcpResponseMessage(id, response.toString().getBytes()));
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (InvalidRequestException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InvalidRequestException e) {
-            //
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
+
+    // try {
+    // for (int i = 0; i < getInputWireCount(); i++) {
+    // if ((getInputWire(i) != null) && getInputWire(i).hasMessage()) {
+    // Message message = getInputWire(i).get();
+    // if (message instanceof TcpRequestMessage) {
+    // request = (TcpRequestMessage) message;
+    // }
+    // }
+    // }
+    // Thread.sleep(1);
+    // } catch (InterruptedException e) {
+    // Thread.currentThread().interrupt();
+    // } catch (InvalidRequestException e) {
+    // e.printStackTrace();
+    // }
+
+    // try {
+    // if (!receiveRequest(request)) {
+    // throw new InvalidRequestException();
+    // }
+    // String uri = line.split(" ")[1].replaceFirst("/", "");
+    // String access = uri.split("/")[0];
+    // String option = "";
+    // if (uri.split("/").length > 1) {
+    // option = uri.split("/", 2)[1];
+    // }
+    // System.out.println(uri);
+
+    // if (access.equals("dev")) {
+    // Jsonparcing.creatJsonFile(access);
+    // JSONArray jsonArray = getJson(access);
+    // String jsonData = getJsonData(access);
+    // if (uri.equals(access)) {
+    // response = new Response("HTTP/1.1", 200, "OK");
+    // response.addHeader("Content-Type", "application/json");
+    // response.addBody(jsonData);
+    // response.addHeader("Content-Length", String.valueOf(jsonData.length()));
+    // } else if (jsonArray.stream().anyMatch(obj -> ((JSONObject)
+    // obj).containsKey("id"))) {
+    // response = new Response("HTTP/1.1", 200, "OK");
+    // response.addHeader("Content-Type", "application/json");
+    // Jsonparcing.creatJsonFile(uri);
+    // jsonData = getJsonData(uri);
+    // response.addBody(jsonData);
+    // response.addHeader("Content-Length", String.valueOf(jsonData.length()));
+    // } else {
+    // response = new Response("HTTP/1.1", 404, "NOT FOUND");
+    // }
+    // }
+    // id = UuidCreator.getTimeBased();
+    // System.out.println(response.toString());
+    // output(new TcpResponseMessage(id, response.toString().getBytes()));
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // } catch (InvalidRequestException e) {
+    // //
+    // } catch (ParseException e) {
+    // e.printStackTrace();
+    // } catch (NullPointerException e) {
+    // //
+    // }
+    // }
 }
