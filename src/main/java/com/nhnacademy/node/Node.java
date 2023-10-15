@@ -9,13 +9,13 @@ import org.json.simple.JSONObject;
 import com.github.f4b6a3.uuid.UuidCreator;
 
 public abstract class Node {
-    private static int count;
+    private static int count; // 갯수
     UUID id;
     String name;
     Logger log;
 
     Node() {
-        this(UuidCreator.getTimeBased());
+        this(UuidCreator.getTimeBased()); // 고유 아이디 자동생성
     }
 
     Node(JSONObject json) {

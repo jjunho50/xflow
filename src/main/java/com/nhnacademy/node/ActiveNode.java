@@ -7,7 +7,7 @@ import org.json.simple.JSONObject;
 import com.nhnacademy.exception.AlreadyStartedException;
 
 public abstract class ActiveNode extends Node implements Runnable {
-    public static final long DEFAULT_INTERVAL = 1;
+    public static final long DEFAULT_INTERVAL = 100;
     Thread thread;
 
     long interval = DEFAULT_INTERVAL;
@@ -91,8 +91,7 @@ public abstract class ActiveNode extends Node implements Runnable {
                 }
             }
 
-            previousTime =
-                    startTime + (System.currentTimeMillis() - startTime) / interval * interval;
+            previousTime = startTime + (System.currentTimeMillis() - startTime) / interval * interval;
         }
 
         postprocess();

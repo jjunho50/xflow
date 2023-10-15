@@ -13,7 +13,6 @@ public abstract class InputNode extends ActiveNode {
 
     InputNode(JSONObject json) {
         super(json);
-
     }
 
     InputNode(String name, int count) {
@@ -56,7 +55,6 @@ public abstract class InputNode extends ActiveNode {
         if (index < 0 || outputWires.length <= index) {
             throw new OutOfBoundsException();
         }
-
         return outputWires[index];
     }
 
@@ -68,5 +66,4 @@ public abstract class InputNode extends ActiveNode {
             }
         }
     }
-
 }

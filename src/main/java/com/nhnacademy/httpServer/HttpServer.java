@@ -2,7 +2,6 @@ package com.nhnacademy.httpServer;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -132,12 +131,10 @@ public class HttpServer extends Thread {
         outputStream.flush();
     }
 
-
     @Override
     public void run() {
         try (BufferedInputStream socketIn = new BufferedInputStream(socket.getInputStream());
-                BufferedOutputStream socketOut =
-                        new BufferedOutputStream(socket.getOutputStream())) {
+                BufferedOutputStream socketOut = new BufferedOutputStream(socket.getOutputStream())) {
 
             Request request = receiveRequest(socketIn);
             sendResponse(socketOut, request);
@@ -145,6 +142,5 @@ public class HttpServer extends Thread {
         } catch (IOException e) {
         }
     }
-
 
 }
