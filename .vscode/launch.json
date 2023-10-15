@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TestServerFeedback",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.test.TestServerFeedback",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
+            "name": "TestSocektServerWithClient",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.test.TestSocektServerWithClient",
+            "projectName": "xflow"
+        },
+        {
+            "type": "java",
             "name": "TestSocketClient",
             "request": "launch",
             "mainClass": "com.nhnacademy.test.TestSocketClient",
