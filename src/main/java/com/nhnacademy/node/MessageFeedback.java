@@ -73,8 +73,6 @@ public class MessageFeedback extends InputOutputNode {
     }
 
     Thread messageReceiver;
-    Response response;
-    UUID id;
 
     public String receiveRequest(TcpRequestMessage message) throws IOException {
         byte[] data = message.getPayload();
@@ -120,6 +118,8 @@ public class MessageFeedback extends InputOutputNode {
                             option = uri.split("/", 2)[1];
                         }
                         System.out.println(uri);
+                        Response response = new Response("HTTP/1.1", 200, "OK");
+                        UUID id;
 
                         if (access.equals("dev")) {
                             Jsonparcing.creatJsonFile(access);
@@ -141,7 +141,7 @@ public class MessageFeedback extends InputOutputNode {
                                 response = new Response("HTTP/1.1", 404, "NOT FOUND");
                             }
                         }
-                        id = UuidCreator.getTimeBased();
+                        id = request.getSenderId();
                         System.out.println(response.toString());
                         output(new TcpResponseMessage(id, response.toString().getBytes()));
                     }

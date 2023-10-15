@@ -12,9 +12,12 @@ public class TestServerFeedback {
         TCPServer server = new TCPServer("server");
         MessageFeedback a = new MessageFeedback();
         Wire wire1 = new BufferedWire();
+        Wire wire2 = new BufferedWire();
 
         server.connectOutputWire(0, wire1);
         a.connectInputWire(0, wire1);
+        a.connectOutputWire(0, wire2);
+        server.connectInputWire(0, wire2);
 
         a.start();
         server.start();
